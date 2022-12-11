@@ -1,0 +1,140 @@
+a {
+    color: #0B2C08FF;
+    font-weight: bold;
+}
+a:hover{
+    color: darkorange;
+}
+p {
+    font-size: medium;
+}
+h2 {
+    margin: 0.1vw;
+    color: #1A6715FF;
+    text-align: center;
+    text-decoration-color: darkorange;
+}
+.legenda{
+    color: crimson;
+}
+
+header{
+    /*background-color: #234406FF;
+    color: #EA000AFF;*/
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.heading{
+    color: #105C0BFF;
+    font-style: italic;
+    font-weight: bold;
+    font-size: xxx-large;
+}
+.heading1{
+    color: #EA000AFF;
+    font-size: x-large;
+    font-style: italic;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.heading2{
+    color: #105C0BFF;
+    font-size: x-large;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.heading3{
+    color: #105C0BFF;
+    font-size: large;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.btn-start{
+    background-color: #105C0BFF;
+    border: 1px solid #EA000AFF;
+    color: #F2BF2FFF;
+    font-size: 18px;
+    padding: 20px;
+    margin: 7px;
+    cursor: pointer;
+    border-radius: 9px;
+}
+
+.btn-start:hover{
+    color: darkorange;
+    background-color: #0a3807;
+}
+
+.btn-small{
+    background-color: #105C0BFF;
+    border: 1px solid #EA000AFF;
+    color: #F2BF2FFF;
+    font-size: 15px;
+    padding: 10px;
+    margin: 3px;
+    cursor: pointer;
+}
+
+.btn-small:hover{
+    color: darkorange;
+    background-color: #0a3807;
+}
+
+.btn-green{
+    background-color: #105C0BFF;
+    border: 3px solid #EA000AFF;
+    color: #F2BF2FFF;
+    cursor: pointer;
+}
+
+.card{
+    grid-auto-flow: column;
+}
+.noBackground{
+    background-image: url(../img/aut_back.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+.onlyBackground{
+    background-image: url(../img/aut_back.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+.bg_login{
+    background-image: url(../img/aut_back.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ }
+.onlyBackground_2{
+    background-image: url(../img/eli2.jpg);
+    background-size: cover;
+    height: 100vh;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+@media (max-width: 391px){
+    img{
+        width: 15%;
+    }
+    .flower{
+        width: 45%;
+    }
+    .onlyBackground {
+        background-image: none;
+    }
+}
