@@ -179,27 +179,27 @@ public class AdminController {
         }
 
         // Проверка на пустоту файла
-        if(!file_five.isEmpty()){
-            System.out.println("!!!!!!!!!!!!!!!!"+file_five);
-            // Дирректория по сохранению файла
-            File uploadDir = new File(uploadPath);
-            // Если данной дирректории по пути не сущетсвует
-            if(!uploadDir.exists()){
-                // Создаем данную дирректорию
-                uploadDir.mkdir();
-            }
-            // Создаем уникальное имя файла
-            // UUID представляет неищменный универсальный уникальный идентификатор
-            String uuidFile = UUID.randomUUID().toString();
-            // file_one.getOriginalFilename() - наименование файла с формы
-            String resultFileName = uuidFile + "." + file_five.getOriginalFilename();
-            // Загружаем файл по указаннопу пути
-            file_five.transferTo(new File(uploadPath + "/" + resultFileName));
-            Image image = new Image();
-            image.setProduct(product);
-            image.setFileName(resultFileName);
-            product.addImageProduct(image);
-        }
+//        if(!file_five.isEmpty()){
+//            System.out.println("!!!!!!!!!!!!!!!!"+file_five);
+//            // Дирректория по сохранению файла
+//            File uploadDir = new File(uploadPath);
+//            // Если данной дирректории по пути не сущетсвует
+//            if(!uploadDir.exists()){
+//                // Создаем данную дирректорию
+//                uploadDir.mkdir();
+//            }
+//            // Создаем уникальное имя файла
+//            // UUID представляет неищменный универсальный уникальный идентификатор
+//            String uuidFile = UUID.randomUUID().toString();
+//            // file_one.getOriginalFilename() - наименование файла с формы
+//            String resultFileName = uuidFile + "." + file_five.getOriginalFilename();
+//            // Загружаем файл по указаннопу пути
+//            file_five.transferTo(new File(uploadPath + "/" + resultFileName));
+//            Image image = new Image();
+//            image.setProduct(product);
+//            image.setFileName(resultFileName);
+//            product.addImageProduct(image);
+//        }
 
         productService.saveProduct(product);
         return "redirect:/admin";
