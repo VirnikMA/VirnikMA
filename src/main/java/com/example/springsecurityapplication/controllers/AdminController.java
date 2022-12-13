@@ -6,6 +6,7 @@ import com.example.springsecurityapplication.models.Order;
 import com.example.springsecurityapplication.models.Product;
 import com.example.springsecurityapplication.models.Person;
 import com.example.springsecurityapplication.repositories.CategoryRepository;
+import com.example.springsecurityapplication.repositories.ImageRepository;
 import com.example.springsecurityapplication.security.PersonDetails;
 import com.example.springsecurityapplication.services.OrderService;
 import com.example.springsecurityapplication.services.PersonService;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,7 +35,6 @@ public class AdminController {
     @Value("${upload.path}")
     private String uploadPath;
 
-
     private final ProductValidator productValidator;
     private final ProductService productService;
 
@@ -43,15 +42,18 @@ public class AdminController {
     private final PersonService personService;
     private final OrderService orderService;
 
+    private final ImageRepository imageRepository;
+
     public String search_hz;
 
     @Autowired
-    public AdminController(ProductValidator productValidator, ProductService productService, CategoryRepository categoryRepository, PersonService personService, OrderService orderService) {
+    public AdminController(ProductValidator productValidator, ProductService productService, CategoryRepository categoryRepository, PersonService personService, OrderService orderService, ImageRepository imageRepository) {
         this.productValidator = productValidator;
         this.productService = productService;
         this.categoryRepository = categoryRepository;
         this.personService = personService;
         this.orderService = orderService;
+        this.imageRepository = imageRepository;
     }
 
     //    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('')")
@@ -83,9 +85,11 @@ public class AdminController {
     }
 
     // Метод по добавлению объекта с формы в таблицу product
-    @PostMapping("/product/add")
-    public String addProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, @RequestParam("file_one") MultipartFile file_one, @RequestParam("file_two") MultipartFile file_two, @RequestParam("file_three") MultipartFile file_three, @RequestParam("file_four") MultipartFile file_four, @RequestParam("file_five") MultipartFile file_five) throws IOException {
+//    @PostMapping("/product/add")
+//    public String addProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, @RequestParam("file_one") MultipartFile file_one, @RequestParam("file_two") MultipartFile file_two, @RequestParam("file_three") MultipartFile file_three, @RequestParam("file_four") MultipartFile file_four, @RequestParam("file_five") MultipartFile file_five) throws IOException {
 
+    @PostMapping("/product/add")
+    public String addProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, @RequestParam("file_one") MultipartFile file_one, @RequestParam("file_two") MultipartFile file_two, @RequestParam("file_three") MultipartFile file_three, @RequestParam("file_four") MultipartFile file_four) throws IOException {
         productValidator.validate(product, bindingResult);
         if(bindingResult.hasErrors()){
             return "product/addProduct";
@@ -225,9 +229,56 @@ public class AdminController {
         productService.updateProduct(id, product);
         return "redirect:/admin";
     }
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ФОТО
+    @GetMapping("/product/{id_product}/image/delete/{id_img}")
+    public String deleteImage(@PathVariable("id_product") int id_product, @PathVariable("id_img") int id_img) {
+
+        Product product = productService.getProductId(id_product);
+        if(product.getImageList().size() > 1) {
+            imageRepository.deleteImage(id_img);
+        }
+        return "redirect:/admin/product/edit/"+id_product;
+    }
+
+    //добавить фотку существующему товару
+    @PostMapping("/product/{id_product}/image/add")
+    public String addImage(@PathVariable("id_product") int id_product, BindingResult bindingResult,
+                           @RequestParam("file_one") MultipartFile file_one) throws IOException {
+
+        Product product = productService.getProductId(id_product);
+//        productValidator.validate(product, bindingResult);
+//        if(bindingResult.hasErrors()){
+//            return "redirect:/admin/product/edit/{id_product}";
+//        }
+        // Проверка на пустоту файла
+        if(file_one != null){
+            // Дирректория по сохранению файла
+            File uploadDir = new File(uploadPath);
+            // Если данной дирректории по пути не сущетсвует
+            if(!uploadDir.exists()){
+                // Создаем данную дирректорию
+                uploadDir.mkdir();
+            }
+            // Создаем уникальное имя файла
+            // UUID представляет неищменный универсальный уникальный идентификатор
+            String uuidFile = UUID.randomUUID().toString();
+            // file_one.getOriginalFilename() - наименование файла с формы
+            String resultFileName = uuidFile + "." + file_one.getOriginalFilename();
+            // Загружаем файл по указаннопу пути
+            file_one.transferTo(new File(uploadPath + "/" + resultFileName));
+            Image image = new Image();
+            image.setProduct(product);
+            image.setFileName(resultFileName);
+            product.addImageProduct(image);
+        }
+        productService.updateProduct(id_product, product);
+        return "redirect:/admin/product/edit/{id_product}";
+    }
 
 
-    //МОИ ДОПОЛНЕНИЯ К БАЗОВОМУ ПРОЕКТУ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ЮЗЕРЫ
 
     // Метод возвращает страницу с выводом пользователей и кладет объект пользователя в модель
     @GetMapping("/persons")

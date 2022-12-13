@@ -25,7 +25,7 @@
         </div>
         <br>
         <!--<h3 class="row justify-content-center heading1">Личный кабинет пользователя</h3>-->
-        <form th:method="POST" th:action="@{/product/search}">
+        <form th:method="POST" th:action="@{/index/search}">
             <fieldset>
                 <div class="col-md-12 col-xl-12 cards">
                     <div class="row">
@@ -69,6 +69,20 @@
             </fieldset>
         </form>
 
+        <h3 class="row justify-content-center heading2">Результат: </h3>
+        <div th:each="product : ${search_product}" class="col-md-3 col-xl-3 cards">
+            <div class="card">
+                <img th:src="'/img/' + ${product.imageList[0].getFileName()}" class="card-img-top">
+                <div class="card-body">
+                    <a class="card-title" th:href="@{/product/info/{id}(id=${product.getId()})}"
+                       th:text="${product.getTitle()}"></a>
+                    <p class="card-text" th:text="'Цена: ' + ${product.getPrice()}"></p>
+                </div>
+            </div>
+        </div>
+        <br>
+        <hr>
+        <br>
         <h3 class="row justify-content-center heading2">Доступные товары:</h3>
         <div th:each="product : ${products}" class="col-md-3 col-xl-3 cards">
             <div class="card">

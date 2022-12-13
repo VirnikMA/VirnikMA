@@ -35,7 +35,7 @@
         <h3 class="row justify-content-center heading1">Личный кабинет администратора</h3>
         <hr>
         <h3 class="row justify-content-center heading2">Каталог товаров: </h3>
-        <div class="col-md-3 col-xl-3 cards" th:each="product : ${products}">
+        <div class="col-md-2 col-xl-2 cards" th:each="product : ${products}">
             <div class="card">
                 <img th:src="'/img/' + ${product.imageList[0].getFileName()}" class="card-img-top">
                 <div class="card-body">

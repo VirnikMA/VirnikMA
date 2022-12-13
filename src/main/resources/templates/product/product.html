@@ -9,60 +9,70 @@
     <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet">
 </head>
 <body class="onlyBackground_2">
+
     <div class="container">
+
+
         <div class="row">
             <div class="btn-group" role="group">
                 <a class="w-49 btn btn-lg btn-small" href="/auth/start">Главная страница</a>
                 <a class="w-49 btn btn-lg btn-small" href="/auth/login">Авторизация</a>
             </div>
-            <form th:method="POST" th:action="@{/product/search}">
+            <!--<form th:method="POST" th:action="@{/product/search}">
                 <fieldset>
                     <div class="col-md-12 col-xl-12 cards">
                         <div class="row">
+                            <p class="row justify-content-center heading2">Поиск и сортировка</p>
                             <div class="col-md-6 col-xl-6">
-                                <p class="row justify-content-center heading2">Поиск</p>
                                 <input type="search" name="search"  th:value="*{value_search}" id="search"
                                        placeholder="Поиск по наменованию" class="form-control me-2">
-                                <br>
-                                <input type="radio" id="A" name="category" value="A">
-                                <label class="heading3" for="A">Украшения</label>
-                                <br>
-                                <input type="radio" id="B" name="category" value="B">
-                                <label class="heading3" for="B">Деды Морозы</label>
-                                <br>
-                                <input type="radio" id="C" name="category" value="C">
-                                <label class="heading3" for="C">Подарки</label>
-                            </div>
-
-                            <div class="col-md-6 col-xl-6">
-                                <p class="row justify-content-center heading2">Cортировка</p>
                                 <div class="row">
-                                    <input type="text" name="ot"  th:value="*{value_price_ot}" id="ot"
-                                           placeholder="Цена от" class="w-50 form-control">
-                                    <input type="text" name="do"  th:value="*{value_price_do}" id="do"
-                                           placeholder="Цена до" class="w-50 form-control">
+                                    <div class="col-md-2 col-xl-3">
+                                            <input type="text" name="ot"  th:value="*{value_price_ot}" id="ot"
+                                                   placeholder="Цена от" class="form-control me-2">
+                                            <input type="text" name="do"  th:value="*{value_price_do}" id="do"
+                                                   placeholder="Цена до" class="form-control me-2">
+                                        </div>
+                                    <div class="col-md-10 col-xl-9">
+                                            <div>
+                                                <input type="radio" id="ascending_price" name="price" value="sorted_by_ascending_price">
+                                                <label for="ascending_price" class="heading3">Сортировка по возрастанию цены</label>
+                                                <br>
+                                                <input type="radio" id="descending_price" name="price" value="sorted_by_descending_price">
+                                                <label for="descending_price" class="heading3">Сортировка по убыванию цены</label>
+                                                <br>
+                                            </div>
+                                        </div>
                                 </div>
-
-                                <input type="radio" id="ascending_price" name="price" value="sorted_by_ascending_price">
-                                <label for="ascending_price" class="heading3">Сортировка по возрастанию цены</label>
-                                <br>
-                                <input type="radio" id="descending_price" name="price" value="sorted_by_descending_price">
-                                <label for="descending_price" class="heading3">Сортировка по убыванию цены</label>
-                                <br>
                             </div>
-
-                            <div class="row justify-content-center">
-                                <input type="submit" value="Найти" class="w-50 btn btn-lg btn-small">
+                            <div class="col-md-4 col-xl-4">
+                                <div>
+                                    <input type="radio" id="A" name="category" value="A">
+                                    <label class="heading3" for="A">Украшения</label>
+                                    <br>
+                                    <input type="radio" id="B" name="category" value="B">
+                                    <label class="heading3" for="B">Деды Морозы</label>
+                                    <br>
+                                    <input type="radio" id="C" name="category" value="C">
+                                    <label class="heading3" for="C">Подарки</label>
+                                </div>
                             </div>
+                            <div class="col-md-2 col-xl-2">
+                                <div class="row justify-content-center">
+                                    <input type="submit" value="Найти" class="w-100 btn btn-lg btn-small">
+                                </div>
+                            </div>
+                            <br>
+
                         </div>
                     </div>
                 </fieldset>
-            </form>
+            </form>-->
             <hr>
             <h3 class="row justify-content-center heading2">Результат: </h3>
             <div th:each="product : ${search_product}" class="col-md-3 col-xl-3 cards">
                 <div class="card">
-                    <img th:src="'/img/' + ${product.imageList[0].getFileName()}" class="card-img-top 300px">
+                    <img th:src="'/img/' + ${product.imageList[0].getFileName()}" class="card-img-top">
                     <div class="card-body">
                         <a class="card-title" th:href="@{/product/info/{id}(id=${product.getId()})}"
                             th:text="${product.getTitle()}"></a>
@@ -70,7 +80,9 @@
                     </div>
                 </div>
             </div>
+            <br>
             <hr>
+            <br>
             <h3 class="row justify-content-center heading2">Доступные товары: </h3>
             <div th:each="product : ${products}" class="col-md-3 col-xl-3 cards">
                 <div class="card">

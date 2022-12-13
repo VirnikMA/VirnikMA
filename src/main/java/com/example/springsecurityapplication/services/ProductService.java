@@ -32,6 +32,7 @@ public class ProductService {
     }
 
 
+
     // Данный метод позволяет сохранить объект продукта, который пришел с формы
     @Transactional
     public void saveProduct(Product product){
@@ -57,5 +58,6 @@ public class ProductService {
         Optional<Product> product_db = productRepository.findByTitle(product.getTitle());
         return product_db.orElse(null);
     }
+
 
 }
