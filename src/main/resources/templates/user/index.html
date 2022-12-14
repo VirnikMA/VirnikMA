@@ -76,6 +76,7 @@
                 <div class="card-body">
                     <a class="card-title" th:href="@{/info/{id}(id=${product.getId()})}"
                        th:text="${product.getTitle()}"></a>
+                    <a class="card-title" th:href="@{/cart/add/{id}(id=${product.getId()})}">Добавить в корзину</a>
                     <p class="card-text" th:text="'Цена: ' + ${product.getPrice()}"></p>
                 </div>
             </div>
