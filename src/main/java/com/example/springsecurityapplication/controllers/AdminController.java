@@ -45,6 +45,7 @@ public class AdminController {
     private final ImageRepository imageRepository;
 
     public String search_hz;
+    public String file_name;
 
     @Autowired
     public AdminController(ProductValidator productValidator, ProductService productService, CategoryRepository categoryRepository, PersonService personService, OrderService orderService, ImageRepository imageRepository) {
@@ -221,13 +222,42 @@ public class AdminController {
     public String editProduct(@PathVariable("id") int id, Model model){
         model.addAttribute("editProduct", productService.getProductId(id));
         model.addAttribute("category", categoryRepository.findAll());
+        file_name = null;
         return "product/editProduct";
     }
 
     @PostMapping("/product/edit/{id}")
-    public String editProduct(@ModelAttribute("editProduct") Product product, @PathVariable("id") int id){
+    public String editProduct(@ModelAttribute("editProduct") Product product, @PathVariable("id") int id, @RequestParam("file_name") MultipartFile file_name) throws IOException{
+
+        System.out.println(file_name+"!!!!!!!!!!!!!!!");
+        // Проверка на пустоту файла
+        if(file_name != null){
+            System.out.println(file_name+"!!!!!!NOT NULL!!!!!!!!!");
+            // Дирректория по сохранению файла
+            File uploadDir = new File(uploadPath);
+            // Если данной дирректории по пути не сущетсвует
+            if(!uploadDir.exists()){
+                // Создаем данную дирректорию
+                uploadDir.mkdir();
+                System.out.println("!!!!!!if(!uploadDir.exists()){L!!!!!!!!!");
+            }
+            // Создаем уникальное имя файла
+            // UUID представляет неищменный универсальный уникальный идентификатор
+            String uuidFile = UUID.randomUUID().toString();
+            // file_one.getOriginalFilename() - наименование файла с формы
+            String resultFileName = uuidFile + "." + file_name.getOriginalFilename();
+            // Загружаем файл по указаннопу пути
+            file_name.transferTo(new File(uploadPath + "/" + resultFileName));
+            Image image = new Image();
+            image.setProduct(product);
+            image.setFileName(resultFileName);
+            product.addImageProduct(image);
+            System.out.println("!!!!!!uuidFile{L!!!!!!!!!");
+            file_name = null;
+        }
         productService.updateProduct(id, product);
-        return "redirect:/admin";
+        file_name = null;
+        return "redirect:/admin/product/edit/{id}";
     }
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ФОТО
     @GetMapping("/product/{id_product}/image/delete/{id_img}")
@@ -241,41 +271,43 @@ public class AdminController {
     }
 
     //добавить фотку существующему товару
-    @PostMapping("/product/{id_product}/image/add")
-    public String addImage(@PathVariable("id_product") int id_product, BindingResult bindingResult,
-                           @RequestParam("file_one") MultipartFile file_one) throws IOException {
-
-        Product product = productService.getProductId(id_product);
-//        productValidator.validate(product, bindingResult);
-//        if(bindingResult.hasErrors()){
-//            return "redirect:/admin/product/edit/{id_product}";
+//    @GetMapping("/product/{id_product}/image/add")
+//    public String addImage(@PathVariable("id_product") int id_product, BindingResult bindingResult, @RequestParam("file_one") MultipartFile file_one) throws IOException {
+//
+//        Product product = productService.getProductId(id_product);
+////        productValidator.validate(product, bindingResult);
+////        if(bindingResult.hasErrors()){
+////            return "redirect:/admin/product/edit/{id_product}";
+////        }
+//        System.out.println(file_one+"!!!!!!!!!!!!!!!");
+//        // Проверка на пустоту файла
+//        if(file_one != null){
+//            System.out.println(file_one+"!!!!!!NOT NULL!!!!!!!!!");
+//            // Дирректория по сохранению файла
+//            File uploadDir = new File(uploadPath);
+//            // Если данной дирректории по пути не сущетсвует
+//            if(!uploadDir.exists()){
+//                // Создаем данную дирректорию
+//                uploadDir.mkdir();
+//                System.out.println("!!!!!!if(!uploadDir.exists()){L!!!!!!!!!");
+//            }
+//            // Создаем уникальное имя файла
+//            // UUID представляет неищменный универсальный уникальный идентификатор
+//            String uuidFile = UUID.randomUUID().toString();
+//            // file_one.getOriginalFilename() - наименование файла с формы
+//            String resultFileName = uuidFile + "." + file_one.getOriginalFilename();
+//            // Загружаем файл по указаннопу пути
+//            file_one.transferTo(new File(uploadPath + "/" + resultFileName));
+//            Image image = new Image();
+//            image.setProduct(product);
+//            image.setFileName(resultFileName);
+//            product.addImageProduct(image);
+//            System.out.println("!!!!!!uuidFile{L!!!!!!!!!");
 //        }
-        // Проверка на пустоту файла
-        if(file_one != null){
-            // Дирректория по сохранению файла
-            File uploadDir = new File(uploadPath);
-            // Если данной дирректории по пути не сущетсвует
-            if(!uploadDir.exists()){
-                // Создаем данную дирректорию
-                uploadDir.mkdir();
-            }
-            // Создаем уникальное имя файла
-            // UUID представляет неищменный универсальный уникальный идентификатор
-            String uuidFile = UUID.randomUUID().toString();
-            // file_one.getOriginalFilename() - наименование файла с формы
-            String resultFileName = uuidFile + "." + file_one.getOriginalFilename();
-            // Загружаем файл по указаннопу пути
-            file_one.transferTo(new File(uploadPath + "/" + resultFileName));
-            Image image = new Image();
-            image.setProduct(product);
-            image.setFileName(resultFileName);
-            product.addImageProduct(image);
-        }
-        productService.updateProduct(id_product, product);
-        return "redirect:/admin/product/edit/{id_product}";
-    }
-
-
+//        productService.updateProduct(id_product, product);
+//        return "redirect:/admin/product/edit/"+id_product;
+//    }
+//
 
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ЮЗЕРЫ

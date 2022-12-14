@@ -18,7 +18,7 @@
                 <a class="w-49 btn btn-lg btn-small" href="/auth/start">Главная страница</a>
                 <a class="w-49 btn btn-lg btn-small" href="/auth/login">Авторизация</a>
             </div>
-            <!--<form th:method="POST" th:action="@{/product/search}">
+            <form th:method="POST" th:action="@{/product/search}">
                 <fieldset>
                     <div class="col-md-12 col-xl-12 cards">
                         <div class="row">
@@ -63,11 +63,10 @@
                                 </div>
                             </div>
                             <br>
-
                         </div>
                     </div>
                 </fieldset>
-            </form>-->
+            </form>
             <hr>
             <h3 class="row justify-content-center heading2">Результат: </h3>
             <div th:each="product : ${search_product}" class="col-md-3 col-xl-3 cards">

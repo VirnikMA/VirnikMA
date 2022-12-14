@@ -11,7 +11,8 @@
 <div class="container">
     <div class="row">
         <h3 class="row justify-content-center heading1">Редактирование товара</h3>
-        <form th:method="POST" th:action="@{/admin/product/edit/{id}(id=${editProduct.getId()})}" th:object="${editProduct}">
+        <form th:method="POST" th:action="@{/admin/product/edit/{id}(id=${editProduct.getId()})}"
+           th:object="${editProduct}" enctype="multipart/form-data">
             <div class="row">
                 <label for="title">Введите наименование: </label>
                 <input type="text" th:field="*{title}" placeholder="Наименование" id="title" class="form-control me-2">
@@ -56,37 +57,42 @@
                 <br>
             </div>
             <br>
+            <h3 class="row justify-content-center heading3">Редактирование фотографий товара</h3>
             <div class="row">
                 <div th:each="img : ${editProduct.getImageList()}" class="col-md-3 col-xl-3 cards">
                     <div class="card">
                         <img th:src="'/img/' + ${img.getFileName()}" class="card-img-top">
-                    </div>
-                    <div class="card-body">
-                        <!--<a class="card-title" th:href="@{/product/info/{id}(id=${product.getId()})}"
-                           th:text="${product.getTitle()}" id="title">Изменить</a>-->
-                        <a
-                                th:href="@{/admin/product/{id_product}/image/delete/{id_img}(id_product=${editProduct.getId()}, id_img=${img.getId()})}">Удалить фото</a>
+                        <div class="card-body">
+                            <!--<a class="card-title" th:href="@{/product/info/{id}(id=${product.getId()})}"
+                               th:text="${product.getTitle()}" id="title">Изменить</a>-->
+                            <a th:href="@{/admin/product/{id_product}/image/delete/{id_img}(id_product=${editProduct.getId()}, id_img=${img.getId()})}" class ="btn-primary">Удалить фото</a>
+                        </div>
                     </div>
                 </div>
                 <div th:if="${editProduct.getImageList().size()} < 4" class="col-md-3 col-xl-3 cards">
                     <div class="card">
+                        <input type="file" name="file_name" class="form-control me-2">
+                        <!--<div th:action="@{/admin/product/{id_product}/image/add(id_product=${editProduct.getId()
+                        })}">
 
-                        <form th:method="POST" th:action="@{/admin/product/{id_product}/image/add(id_product=${editProduct.getId()})}">
-                            <!--<a
-                                th:href="@{/admin/product/{id_product}/image/add(id_product=${editProduct.getId()})
-                                }">Добавить</a>-->
                             <input type="file" name="file_one" class="form-control me-2">
+                            <br>
                             <button type="submit" class="btn btn-primary">Добавить фото</button>
-                        </form>
-
+                        </div>-->
                     </div>
                 </div>
+                <!--<div th:if="${editProduct.getImageList().size()} == 4">
+                    <input type="text" id="file_name" value="">
+                </div>-->
             </div>
-
-
-            <div class="row justify-content-center">
-                <input type="submit" value="Редактировать" class="w-50 btn btn-primary">
-                <a href="/admin" class="w-50 btn btn-secondary">Отменить</a>
+            <br>
+            <div class="row">
+                <div class="col-md-6 col-xl-6">
+                    <input type="submit" value="Редактировать" class="w-100 btn btn-primary">
+                </div>
+                <div class="col-md-6 col-xl-6">
+                    <a href="/admin" class="w-100 btn btn-primary">Назад</a>
+                </div>
             </div>
         </form>
     </div>
